@@ -30,34 +30,14 @@ import LandingScreen from './screens/auth/LandingScreen';
 import LoginScreen from './screens/auth/LoginScreen';
 import RegisterScreen from './screens/auth/RegisterScreen';
 import MainScreen from './screens/MainScreen';
+import PostScreen from './screens/PostScreen';
 
 import { Provider } from 'react-redux';
 
 import { store } from './Redux/store';
 
 export default function App() {
-  const [loaded, setLoaded] = React.useState(false);
-  const [login, setLogin] = React.useState(false);
   const stack = createNativeStackNavigator();
-
-  // React.useEffect(() => {
-  //   setLoaded(true);
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (!user) {
-  //       setLogin(false);
-  //     } else {
-  //       setLogin(true);
-  //     }
-  //   });
-  // }, []);
-
-  // if (!loaded) {
-  //   return (
-  //     <SafeAreaView style={tw`flex-1 justify-center`}>
-  //       <ActivityIndicator color="#0000ff" size="large" />
-  //     </SafeAreaView>
-  //   );
-  // }
 
   // if (!login) {
   //   return (
@@ -73,5 +53,25 @@ export default function App() {
   //   );
   // }
 
-  return <MainScreen />;
+  return (
+    <NavigationContainer>
+      <stack.Navigator>
+        <stack.Screen name="Home" component={MainScreen} options={{ headerShown: false }} />
+        <stack.Screen
+          name="Post"
+          component={PostScreen}
+          options={{
+            title: 'Share your thoughts💡',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+            },
+          }}
+        />
+      </stack.Navigator>
+    </NavigationContainer>
+  );
 }

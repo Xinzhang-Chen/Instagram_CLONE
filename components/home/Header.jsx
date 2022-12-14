@@ -2,8 +2,10 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Icon } from '@rneui/themed';
 import React from 'react';
 import tw from 'twrnc';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = () => {
+  const navigate = useNavigation();
   return (
     <View style={tw`flex flex-row justify-between items-center mx-5 mb-1`}>
       <View>
@@ -12,7 +14,7 @@ const Header = () => {
         </TouchableOpacity>
       </View>
       <View style={tw`flex flex-row `}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigate.navigate('Post')}>
           <Icon style={styles.iconStyle} name="plussquareo" type="antdesign" color="white" />
         </TouchableOpacity>
 
