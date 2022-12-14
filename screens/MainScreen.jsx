@@ -5,6 +5,8 @@ import defaultStyle from '../styles/index';
 import Header from '../components/home/Header';
 import Story from '../components/home/Story';
 import Post from '../components/home/Post';
+import BottomTabs from '../components/home/BottomTabs';
+import { Divider } from '@rneui/base';
 
 import { posts } from '../data/posts';
 
@@ -14,16 +16,26 @@ const MainScreen = () => {
       <View>
         <Header />
         <Story />
-        <ScrollView bounces={false} contentContainerStyle={{ paddingBottom: 130 }}>
+        <ScrollView bounces={true} contentContainerStyle={{ paddingBottom: 235 }}>
           {posts.map((post, index) => {
-            return (
-              <View key={`post-${index}`}>
-                <Post post={post} />
-              </View>
-            );
+            if (index === posts.length - 1) {
+              return (
+                <View key={`post-${index}`}>
+                  <Post post={post} />
+                </View>
+              );
+            } else {
+              return (
+                <View key={`post-${index}`}>
+                  <Post post={post} />
+                  <Divider style={tw`mt-3 mb-4`} orientation="horizontal" color="gray" width={2} />
+                </View>
+              );
+            }
           })}
         </ScrollView>
       </View>
+      <BottomTabs />
     </SafeAreaView>
   );
 };
