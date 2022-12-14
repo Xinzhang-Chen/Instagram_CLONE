@@ -32,6 +32,7 @@ const db = getFirestore(app);
 import MainScreen from './screens/MainScreen';
 import PostScreen from './screens/PostScreen';
 import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 
 import { Provider } from 'react-redux';
 
@@ -44,6 +45,7 @@ export default function App() {
     <NavigationContainer>
       <stack.Navigator initialRouteName="Login">
         <stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         <stack.Screen name="Home" component={MainScreen} options={{ headerShown: false }} />
         <stack.Screen
           name="Post"
