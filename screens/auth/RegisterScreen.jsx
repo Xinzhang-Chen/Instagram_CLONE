@@ -3,7 +3,11 @@ import tw from 'twrnc';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
-import { StyleSheet, View, Text, TextInput, SafeAreaView, Button } from 'react-native';
+import { View, TextInput, SafeAreaView, Button } from 'react-native';
+
+import { useDispatch } from 'react-redux';
+
+import { fetchUserInfo } from '../../Redux/slices/userSlice';
 
 const RegisterScreen = () => {
   // States to track the user input
@@ -11,11 +15,16 @@ const RegisterScreen = () => {
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState('');
 
+  const dispatch = useDispatch();
+
   const handleSignUp = () => {
     const auth = getAuth();
     const db = getFirestore();
     createUserWithEmailAndPassword(auth, email, password)
-      .then(async (result) => await setDoc(doc(db, 'users', auth.currentUser.uid), { name, email }))
+      .then(async (result) => {
+        await setDoc(doc(db, 'users', auth.currentUser.uid), { name, email });
+        dispatch(fetchUserInfo());
+      })
       .catch((error) => console.error(error));
   };
 
@@ -49,5 +58,3 @@ const RegisterScreen = () => {
 };
 
 export default RegisterScreen;
-
-const styles = StyleSheet.create({});

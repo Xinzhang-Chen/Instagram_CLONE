@@ -1,4 +1,4 @@
-import { Text, View, Button } from 'react-native';
+import { View, Button } from 'react-native';
 import React from 'react';
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
