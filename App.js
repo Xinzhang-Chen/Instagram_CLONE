@@ -26,11 +26,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-import LandingScreen from './screens/auth/LandingScreen';
-import LoginScreen from './screens/auth/LoginScreen';
-import RegisterScreen from './screens/auth/RegisterScreen';
+// import LandingScreen from './screens/auth/LandingScreen';
+// import LoginScreen from './screens/auth/LoginScreen';
+// import RegisterScreen from './screens/auth/RegisterScreen';
 import MainScreen from './screens/MainScreen';
 import PostScreen from './screens/PostScreen';
+import LoginScreen from './screens/LoginScreen';
 
 import { Provider } from 'react-redux';
 
@@ -39,23 +40,10 @@ import { store } from './Redux/store';
 export default function App() {
   const stack = createNativeStackNavigator();
 
-  // if (!login) {
-  //   return (
-  //     <Provider store={store}>
-  //       <NavigationContainer>
-  //         <stack.Navigator initialRouteName="Landing">
-  //           <stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
-  //           <stack.Screen name="Login" component={LoginScreen} />
-  //           <stack.Screen name="Register" component={RegisterScreen} />
-  //         </stack.Navigator>
-  //       </NavigationContainer>
-  //     </Provider>
-  //   );
-  // }
-
   return (
     <NavigationContainer>
-      <stack.Navigator>
+      <stack.Navigator initialRouteName="Login">
+        <stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <stack.Screen name="Home" component={MainScreen} options={{ headerShown: false }} />
         <stack.Screen
           name="Post"
