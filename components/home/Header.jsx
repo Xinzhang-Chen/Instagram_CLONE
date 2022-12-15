@@ -1,15 +1,27 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { Icon } from '@rneui/themed';
 import React from 'react';
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
+import { getAuth } from 'firebase/auth';
 
 const Header = () => {
   const navigate = useNavigation();
+
+  const handleSignOut = async () => {
+    const auth = getAuth();
+    try {
+      await auth.signOut();
+      console.log('sign out successful');
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
   return (
     <View style={tw`flex flex-row justify-between items-center mx-5 mb-1`}>
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSignOut}>
           <Image style={styles.logoStyle} source={require('../../assets/header-logo.png')} />
         </TouchableOpacity>
       </View>

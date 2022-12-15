@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { View, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import React from 'react';
 import tw from 'twrnc';
 import defaultStyle from '../styles/index';
@@ -10,9 +10,20 @@ import { Divider } from '@rneui/base';
 
 import { posts } from '../data/posts';
 
+import { getFirestore, collectionGroup, onSnapshot } from 'firebase/firestore';
+
 const MainScreen = () => {
+  React.useEffect(() => {
+    const db = getFirestore();
+    const data = collectionGroup(db, 'posts');
+    onSnapshot(data, (snapshot) => {
+      console.log(snapshot.docs.map((doc) => doc.data()));
+    });
+  }, []);
+
   return (
     <SafeAreaView style={[defaultStyle.AndroidSafeArea, tw`bg-black`]}>
+      <StatusBar barStyle="light-content" />
       <View>
         <Header />
         <Story />

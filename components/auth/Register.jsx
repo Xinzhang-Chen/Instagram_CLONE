@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React from 'react';
 import tw from 'twrnc';
 
@@ -10,40 +10,63 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import Validator from 'email-validator';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-
-const Login = () => {
+const Register = () => {
   const navigate = useNavigation();
 
-  const loginSchema = yup.object().shape({
+  const registerSchema = yup.object().shape({
     email: yup.string().email().required('An email is required'),
     password: yup.string().required('An password is required').min(8, 'Password must be at least 8 characters'),
+    username: yup.string().required('A user name is required').min(2, 'A user name must be at least 2 characters'),
   });
 
-  const handleLogin = async (email, password) => {
+  const handleRegister = async (email, password, username) => {
     try {
       const auth = getAuth();
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log('Login successful');
+      const db = getFirestore();
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      await setDoc(doc(db, 'users', auth.currentUser.uid), { email, username });
+      console.log('user created');
     } catch (error) {
-      Alert.alert('The given email or password is incorrect');
+      Alert.alert(error.message);
     }
   };
 
   return (
     <View style={tw`w-full`}>
       <Formik
-        initialValues={{ email: '', password: '' }}
-        validationSchema={loginSchema}
+        initialValues={{ email: '', password: '', username: '' }}
+        validationSchema={registerSchema}
         onSubmit={(values) => {
-          handleLogin(values.email, values.password);
+          handleRegister(values.email, values.password, values.username);
         }}
         validateOnMount={true}
       >
         {({ handleBlur, handleChange, handleSubmit, values, isValid }) => {
           return (
             <>
+              <View>
+                <TextInput
+                  style={[
+                    tw`rounded-lg p-4 mb-3 mx-3 border`,
+                    { backgroundColor: '#FAFAFA' },
+                    { borderColor: 1 > values.username.length || values.username.length >= 2 ? 'black' : 'red' },
+                  ]}
+                  placeholder="User name"
+                  placeholderTextColor="#444"
+                  autoCapitalize="none"
+                  keyboardType=""
+                  textContentType="emailAddress"
+                  autoFocus={true}
+                  onChangeText={handleChange('username')}
+                  onBlur={handleBlur('username')}
+                  value={values.username}
+                />
+              </View>
+
               <View>
                 <TextInput
                   style={[
@@ -56,7 +79,6 @@ const Login = () => {
                   autoCapitalize="none"
                   keyboardType="email-address"
                   textContentType="emailAddress"
-                  autoFocus={true}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
@@ -83,22 +105,19 @@ const Login = () => {
                   value={values.password}
                 />
               </View>
-              <TouchableOpacity style={tw`items-end mb-5 mx-3 `}>
-                <Text style={tw`underline text-blue-800`}>Forgot password?</Text>
-              </TouchableOpacity>
 
               <Button
-                style={tw`mx-8`}
-                buttonStyle={{ backgroundColor: `#198754` }}
-                icon={<Icon style={tw`mr-1`} name="login" type="antdesign" size={15} color="white" />}
-                title="Log in"
+                style={tw`mx-8 mt-3`}
+                icon={<Icon style={tw`mr-1`} name="form" type="antdesign" size={15} color="white" />}
+                title="Register"
                 onPress={handleSubmit}
                 disabled={!isValid}
               />
+
               <View style={tw`items-center flex-row justify-center mt-8`}>
-                <Text>Don't have a account? </Text>
-                <TouchableOpacity onPress={() => navigate.navigate('Register')}>
-                  <Text style={tw`underline text-blue-800`}>Sign up</Text>
+                <Text>Already have a account? </Text>
+                <TouchableOpacity onPress={() => navigate.navigate('Login')}>
+                  <Text style={tw`underline text-blue-800`}>Log in</Text>
                 </TouchableOpacity>
               </View>
             </>
@@ -109,6 +128,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
-const styles = StyleSheet.create({});
+export default Register;
