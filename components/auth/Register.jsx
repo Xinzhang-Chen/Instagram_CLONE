@@ -27,8 +27,10 @@ const Register = () => {
       const auth = getAuth();
       const db = getFirestore();
       await createUserWithEmailAndPassword(auth, email, password);
-
-      await setDoc(doc(db, 'users', auth.currentUser.uid), { email, username });
+      const userInfo = await fetch('https://randomuser.me/api/');
+      const user = await userInfo.json();
+      const image = user.results[0].picture.large;
+      await setDoc(doc(db, 'users', auth.currentUser.uid), { email, username, image, ownerId: auth.currentUser.uid });
       console.log('user created');
     } catch (error) {
       Alert.alert(error.message);

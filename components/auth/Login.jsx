@@ -12,6 +12,7 @@ import * as yup from 'yup';
 import Validator from 'email-validator';
 
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, onSnapshot } from 'firebase/firestore';
 
 const Login = () => {
   const navigate = useNavigation();

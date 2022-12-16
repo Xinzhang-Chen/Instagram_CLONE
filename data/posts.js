@@ -8,10 +8,10 @@ export const posts = [
     likes: 1688,
     caption: 'Welcome to Sydney👋. Hope you have a wonderful trip 🚀!',
     profileImage: users[0].image,
-    Comment: [
+    comments: [
       {
         user: users[1].username,
-        comment: 'Nice image',
+        comments: 'Nice image',
       },
     ],
   },
@@ -23,14 +23,14 @@ export const posts = [
     likes: 10,
     caption: 'Welcome to Sydney',
     profileImage: users[1].image,
-    Comment: [
+    comments: [
       {
         user: users[2].username,
-        comment: 'Awsome post',
+        comments: 'Awsome post',
       },
       {
         user: users[3].username,
-        comment: ' Nice building Nice building Nice building Nice building Nice building Nice building',
+        comments: ' Nice building Nice building Nice building Nice building Nice building Nice building',
       },
     ],
   },
@@ -42,6 +42,6 @@ export const posts = [
     likes: 8000,
     caption: 'Welcome to Sydney',
     profileImage: users[1].image,
-    Comment: [],
+    comments: [],
   },
 ];

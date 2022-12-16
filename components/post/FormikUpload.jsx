@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native';
 import React from 'react';
 import tw from 'twrnc';
 
+import { getAuth } from 'firebase/auth';
+import { getFirestore, addDoc, getDocs, doc, collection, where, limit, query } from 'firebase/firestore';
+
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
@@ -18,11 +21,51 @@ const FormikUpload = () => {
   const [image, setImage] = React.useState('');
   const navigate = useNavigation();
 
+  const [currentUser, setCurrentUser] = React.useState(null);
+
+  const getUserInfo = async () => {
+    try {
+      const auth = getAuth();
+      const db = getFirestore();
+      const user = auth.currentUser;
+      const unsubscribe = await getDocs(query(collection(db, 'users'), where('ownerId', '==', user.uid), limit(1)));
+      unsubscribe.forEach((doc) => {
+        setCurrentUser({
+          username: doc.data().username,
+          image: doc.data().image,
+        });
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  React.useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const uploadPost = async (imageURL, caption) => {
+    const auth = getAuth();
+    const db = getFirestore();
+    addDoc(collection(db, 'users', `${auth.currentUser.uid}`, 'posts'), {
+      imageURL,
+      user: currentUser,
+      caption,
+      likes: 0,
+      likesByUser: [],
+      comments: [],
+    })
+      .then(() => navigate.navigate('Home'))
+      .catch(() => console.log('error'));
+  };
+
   return (
     <View>
       <Formik
         initialValues={{ imageURL: '', caption: '' }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          uploadPost(values.imageURL, values.caption);
+        }}
         validationSchema={uploadPostSchema}
         validateOnMount={true}
       >

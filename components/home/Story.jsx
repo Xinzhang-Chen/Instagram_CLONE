@@ -11,11 +11,11 @@ const Story = () => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={tw`mb-2`}>
         {users.map((user, index) => {
           return (
-            <TouchableOpacity style={tw`justify-center items-center ml-2.5`} key={index}>
+            <TouchableOpacity style={tw`justify-center items-center ml-3 `} key={index}>
               <Image style={styles.story} source={{ uri: user.image }} />
               <Text style={tw`text-white`}>
-                {user.username.length > 11
-                  ? user.username.slice(0, 10).toLowerCase() + '...'
+                {user.username.length > 6
+                  ? user.username.slice(0, 5).toLowerCase() + '...'
                   : user.username.toLowerCase()}
               </Text>
             </TouchableOpacity>

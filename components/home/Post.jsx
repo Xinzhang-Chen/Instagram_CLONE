@@ -4,6 +4,10 @@ import { Divider } from '@rneui/base';
 import tw from 'twrnc';
 import React from 'react';
 
+const handleLike = (post) => {
+  console.log(post);
+};
+
 const Post = ({ post }) => {
   return (
     <View>
@@ -39,21 +43,21 @@ const PostImage = ({ imageURL }) => {
 const PostFooter = ({ postDetail }) => {
   return (
     <View style={tw`mx-3 mt-2`}>
-      <FooterIcons />
+      <FooterIcons post={postDetail} />
       <View style={tw`mt-3`}>
         <Text style={tw`text-white font-semibold text-sm`}>{postDetail.likes.toLocaleString('en')} Likes</Text>
       </View>
       <Caption userName={postDetail.user.username} caption={postDetail.caption} />
-      <Comment comments={postDetail.Comment} />
+      <Comment comments={postDetail.comments} />
     </View>
   );
 };
 
-const FooterIcons = () => {
+const FooterIcons = ({ post }) => {
   return (
     <View style={tw`flex-row justify-between`}>
       <View style={styles.footerIconLeft}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleLike(post)}>
           <Icon name="heart-o" type="font-awesome" color="white" />
         </TouchableOpacity>
         <TouchableOpacity>
