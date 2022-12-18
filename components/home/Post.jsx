@@ -5,7 +5,7 @@ import tw from 'twrnc';
 import React from 'react';
 
 const handleLike = (post) => {
-  console.log(post);
+  const creatorInfo = post.user;
 };
 
 const Post = ({ post }) => {
